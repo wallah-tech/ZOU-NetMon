@@ -31,8 +31,8 @@ export default function Header({ title, subtitle }: HeaderProps) {
 
           <div className="flex items-center space-x-3 pl-4 border-l border-gray-200">
             <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">Admin User</p>
-              <p className="text-xs text-gray-500">Network Administrator</p>
+              <p className="text-sm font-medium text-gray-900">Muhammad_Wallah</p>
+              <p className="text-xs text-gray-500">Owner & Developer</p>
             </div>
             <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
               <User className="w-6 h-6 text-white" />
