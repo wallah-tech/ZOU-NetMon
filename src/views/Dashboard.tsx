@@ -6,6 +6,7 @@ import NetBarChart from '../components/charts/NetBarChart';
 import { dashboardService, DashboardStats } from '../services/dashboardService';
 import { alertService, Alert } from '../services/alertService';
 import { trafficService } from '../services/trafficService';
+import { routerService } from '../services/routerService';
 
 interface TimeSeriesPoint {
   [key: string]: string | number;
@@ -51,7 +52,17 @@ export default function Dashboard() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    const rSub = routerService.subscribeToChanges(() => load());
+    const aSub = alertService.subscribeToChanges(() => load());
+    const tSub = trafficService.subscribeToChanges(() => load());
+    return () => {
+      rSub.unsubscribe();
+      aSub.unsubscribe();
+      tSub.unsubscribe();
+    };
+  }, []);
 
   const formatBandwidth = (mbps: number) => {
     if (mbps >= 1000) return `${(mbps / 1000).toFixed(1)} Gbps`;

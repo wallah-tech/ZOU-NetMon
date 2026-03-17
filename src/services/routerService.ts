@@ -74,4 +74,11 @@ export const routerService = {
 
     if (error) throw error;
   },
+
+  subscribeToChanges(callback: () => void) {
+    return supabase
+      .channel('public:routers')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'routers' }, callback)
+      .subscribe();
+  },
 };

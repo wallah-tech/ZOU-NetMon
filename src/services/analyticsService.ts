@@ -66,4 +66,12 @@ export const analyticsService = {
     }
     return Object.entries(byDay).map(([date, v]) => ({ date, ...v }));
   },
+
+  subscribeToChanges(callback: () => void) {
+    return supabase
+      .channel('public:analytics_tables')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'anomalies' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'predictions' }, callback)
+      .subscribe();
+  },
 };

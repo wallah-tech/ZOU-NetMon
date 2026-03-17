@@ -87,6 +87,13 @@ export const trafficService = {
     }
     return Object.entries(byProtocol).map(([protocol, v]) => ({ protocol, ...v }));
   },
+
+  subscribeToChanges(callback: () => void) {
+    return supabase
+      .channel('public:traffic_data')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'traffic_data' }, callback)
+      .subscribe();
+  },
 };
 
 function parseIntervalToMs(interval: string): number {

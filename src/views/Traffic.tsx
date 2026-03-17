@@ -41,7 +41,13 @@ export default function Traffic() {
     }
   }, [range]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+    const sub = trafficService.subscribeToChanges(() => {
+      load();
+    });
+    return () => { sub.unsubscribe(); };
+  }, [load]);
 
   const formatMbps = (mbps: number) => {
     if (mbps >= 1000) return `${(mbps / 1000).toFixed(2)} Gbps`;

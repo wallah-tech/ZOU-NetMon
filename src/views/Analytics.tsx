@@ -39,7 +39,13 @@ export default function Analytics() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    const sub = analyticsService.subscribeToChanges(() => {
+      load();
+    });
+    return () => { sub.unsubscribe(); };
+  }, []);
 
   const handleResolve = async (id: string) => {
     setResolving(id);

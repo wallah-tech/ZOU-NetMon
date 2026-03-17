@@ -93,4 +93,11 @@ export const reportService = {
     a.click();
     URL.revokeObjectURL(url);
   },
+
+  subscribeToChanges(callback: () => void) {
+    return supabase
+      .channel('public:reports')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reports' }, callback)
+      .subscribe();
+  },
 };

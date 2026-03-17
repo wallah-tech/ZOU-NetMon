@@ -27,7 +27,13 @@ export default function Alerts() {
     }
   };
 
-  useEffect(() => { load(); }, [filter]);
+  useEffect(() => {
+    load();
+    const sub = alertService.subscribeToChanges(() => {
+      load();
+    });
+    return () => { sub.unsubscribe(); };
+  }, [filter]);
 
   const handleAcknowledge = async (id: string) => {
     setAcknowledging(id);

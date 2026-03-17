@@ -15,6 +15,8 @@ export default function Routers() {
 
   useEffect(() => {
     loadRouters();
+    const sub = routerService.subscribeToChanges(() => loadRouters());
+    return () => { sub.unsubscribe(); };
   }, []);
 
   const loadRouters = async () => {

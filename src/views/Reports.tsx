@@ -31,7 +31,13 @@ export default function Reports() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    const sub = reportService.subscribeToChanges(() => {
+      load();
+    });
+    return () => { sub.unsubscribe(); };
+  }, []);
 
   const handleGenerate = async () => {
     setIsGenerating(true);

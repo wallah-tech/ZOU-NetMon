@@ -69,4 +69,11 @@ export const alertService = {
       acknowledged: alerts.filter(a => a.acknowledged).length,
     };
   },
+
+  subscribeToChanges(callback: () => void) {
+    return supabase
+      .channel('public:alerts')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'alerts' }, callback)
+      .subscribe();
+  },
 };
