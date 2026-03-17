@@ -20,8 +20,8 @@ export default function Sidebar({ activeView, onViewChange }: SidebarProps) {
     <div className="w-64 bg-slate-900 text-white min-h-screen flex flex-col">
       <div className="p-6 border-b border-slate-800">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Router className="w-6 h-6" />
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center p-1.5 shadow-md flex-shrink-0">
+            <img src="./logo.png" alt="ZOU Logo" className="w-full h-full object-contain drop-shadow-sm" />
           </div>
           <div>
             <h1 className="text-lg font-bold">ZOU NetMon</h1>
