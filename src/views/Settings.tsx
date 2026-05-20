@@ -259,9 +259,9 @@ export default function Settings() {
             </thead>
             <tbody>
               {[
-                { name: 'Admin User', email: 'admin@zou.ac.zw', role: 'Administrator', status: 'Active' },
-                { name: 'Network Operator', email: 'netops@zou.ac.zw', role: 'Operator', status: 'Active' },
-                { name: 'View Only User', email: 'viewer@zou.ac.zw', role: 'Viewer', status: 'Active' },
+                { name: 'Admin User', email: 'admin@ict.gov.zw', role: 'Administrator', status: 'Active' },
+                { name: 'Network Operator', email: 'netops@ict.gov.zw', role: 'Operator', status: 'Active' },
+                { name: 'View Only User', email: 'viewer@ict.gov.zw', role: 'Viewer', status: 'Active' },
               ].map((user, idx) => (
                 <tr key={idx} className="border-b border-gray-100">
                   <td className="py-3 px-4 text-sm font-medium text-gray-900">{user.name}</td>

@@ -1,0 +1,70 @@
+# ZOU NetMon – Application Stack
+#
+# This compose file runs the three application-layer services:
+#   • web         – Vite/React dev server with hot-reload (port 5173)
+#   • poller      – Live network poller (writes to Supabase every 30 s)
+#   • ai-analyzer – Anomaly & prediction engine (runs every 60 s)
+#
+# Prerequisites:
+#   • Docker Desktop running
+#   • Supabase local stack running separately: `npx supabase start`
+#     (provides the API on http://localhost:54321)
+#
+# Usage:
+#   docker compose up --build        # first run
+#   docker compose up                # subsequent runs (images cached)
+#   docker compose down              # stop & remove containers
+
+services:
+
+  # ── Vite Frontend Web Server ────────────────────────────────────────────────
+  # The React bundle runs in the browser, so VITE_SUPABASE_URL must be
+  # reachable from the user's browser → localhost:54321 is correct here.
+  web:
+    build: .
+    container_name: netmon_web
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_SUPABASE_URL=http://localhost:54321
+      - VITE_SUPABASE_ANON_KEY=sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
+    volumes:
+      - .:/app
+      - /app/node_modules
+    # host.docker.internal resolves to the Windows host on Docker Desktop;
+    # the line below adds it on Linux hosts too (no-op on Windows).
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # ── Live Network Poller ─────────────────────────────────────────────────────
+  # Runs inside the container → must reach Supabase via the host bridge,
+  # not localhost (which inside a container points to the container itself).
+  poller:
+    build: .
+    container_name: netmon_poller
+    restart: unless-stopped
+    command: ["node", "monitoring/poller.mjs"]
+    environment:
+      - VITE_SUPABASE_URL=http://host.docker.internal:54321
+      - VITE_SUPABASE_ANON_KEY=sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
+    volumes:
+      - .:/app
+      - /app/node_modules
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # ── AI Analyzer ─────────────────────────────────────────────────────────────
+  ai-analyzer:
+    build: .
+    container_name: netmon_ai_analyzer
+    restart: unless-stopped
+    command: ["node", "monitoring/ai_analyzer.mjs"]
+    environment:
+      - VITE_SUPABASE_URL=http://host.docker.internal:54321
+      - VITE_SUPABASE_ANON_KEY=sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
+    volumes:
+      - .:/app
+      - /app/node_modules
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

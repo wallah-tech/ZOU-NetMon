@@ -52,8 +52,12 @@ export default function RouterModal({
     try {
       await onSubmit(formData);
       onClose();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save router');
+    } catch (err: any) {
+      if (err.code === '23505') {
+        setError('A router with this IP address already exists');
+      } else {
+        setError(err.message || 'Failed to save router');
+      }
     }
   };
 

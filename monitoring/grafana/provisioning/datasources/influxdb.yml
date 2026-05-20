@@ -1,0 +1,16 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: zou-netmon
+      defaultBucket: network-metrics
+      tlsSkipVerify: true
+    secureJsonData:
+      token: zou-super-secret-influx-token
+    isDefault: true
+    editable: true

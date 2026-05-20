@@ -1,0 +1,93 @@
+# ZOU NetMon Monitoring Stack – Docker on Windows
+#
+# Prerequisites:
+#   - Docker Desktop for Windows installed (https://www.docker.com/products/docker-desktop/)
+#   - WSL2 backend enabled (recommended for UDP port support)
+#   - Run from this directory: docker compose up -d
+#
+# Monitoring Server IP (as seen by routers): your Windows machine LAN IP
+# Check with: ipconfig  ->  look for your Ethernet/Wi-Fi IPv4 address
+
+
+
+services:
+
+  # ── InfluxDB v2 – Time-Series Database ──────────────────────────────────────
+  influxdb:
+    image: influxdb:2.7
+    container_name: zou_influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: ZouAdmin@2026!
+      DOCKER_INFLUXDB_INIT_ORG: zou-netmon
+      DOCKER_INFLUXDB_INIT_BUCKET: network-metrics
+      DOCKER_INFLUXDB_INIT_RETENTION: 90d
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: zou-super-secret-influx-token
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+      - influxdb_config:/etc/influxdb2
+
+  # ── Telegraf – SNMP Poller ───────────────────────────────────────────────────
+  telegraf:
+    image: telegraf:latest
+    container_name: zou_telegraf
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+    # Telegraf polls routers via SNMP – no inbound ports needed
+
+  # ── nfcapd – NetFlow / IPFIX Collector ──────────────────────────────────────
+  nfcapd:
+    image: heywoodlh/nfcapd:latest
+    container_name: zou_nfcapd
+    restart: unless-stopped
+    ports:
+      - "2055:2055/udp"   # NetFlow v5/v9 / IPFIX
+      - "6343:6343/udp"   # sFlow
+    volumes:
+      - netflow_data:/flows
+    environment:
+      - NFCAPD_PORT=2055
+
+  # ── syslog-ng – Syslog Receiver ─────────────────────────────────────────────
+  syslog:
+    image: lscr.io/linuxserver/syslog-ng:latest
+    container_name: zou_syslog
+    restart: unless-stopped
+    ports:
+      - "514:5514/udp"    # Syslog UDP (mapped to internal 5514 to avoid root)
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./syslog/syslog-ng.conf:/config/syslog-ng.conf
+      - syslog_logs:/var/log/routers
+
+  # ── Grafana – Dashboard & Alerting ──────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: zou_grafana
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ZouGrafana@2026!
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+
+volumes:
+  influxdb_data:
+  influxdb_config:
+  netflow_data:
+  syslog_logs:
+  grafana_data:
