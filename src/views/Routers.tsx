@@ -52,8 +52,6 @@ export default function Routers() {
       }
       await loadRouters();
       setIsModalOpen(false);
-    } catch (err) {
-      throw err;
     } finally {
       setIsSubmitting(false);
     }

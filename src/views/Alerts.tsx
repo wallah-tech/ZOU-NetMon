@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { AlertCircle, AlertTriangle, CheckCircle, Clock, Info, RefreshCw } from 'lucide-react';
 import { alertService, Alert, AlertFilter } from '../services/alertService';
 
@@ -10,7 +10,7 @@ export default function Alerts() {
   const [counts, setCounts] = useState({ total: 0, critical: 0, warnings: 0, acknowledged: 0 });
   const [acknowledging, setAcknowledging] = useState<string | null>(null);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       setIsLoading(true);
       setError('');
@@ -25,7 +25,7 @@ export default function Alerts() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filter]);
 
   useEffect(() => {
     load();
@@ -33,7 +33,7 @@ export default function Alerts() {
       load();
     });
     return () => { sub.unsubscribe(); };
-  }, [filter]);
+  }, [load]);
 
   const handleAcknowledge = async (id: string) => {
     setAcknowledging(id);

@@ -64,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!found) {
         return { success: false, error: 'Invalid email or password. Please try again.' };
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _pw, ...authUser } = found;
       setUser(authUser);
       sessionStorage.setItem('zou_netmon_user', JSON.stringify(authUser));
