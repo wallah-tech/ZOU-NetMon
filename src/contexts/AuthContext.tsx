@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(() => {
     // Persist session across hot-reloads in dev
     try {
-      const stored = sessionStorage.getItem('zou_netmon_user');
+      const stored = sessionStorage.getItem('ict_netmon_user');
       return stored ? (JSON.parse(stored) as AuthUser) : null;
     } catch {
       return null;
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _pw, ...authUser } = found;
       setUser(authUser);
-      sessionStorage.setItem('zou_netmon_user', JSON.stringify(authUser));
+      sessionStorage.setItem('ict_netmon_user', JSON.stringify(authUser));
       return { success: true };
     },
     []
@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     setUser(null);
-    sessionStorage.removeItem('zou_netmon_user');
+    sessionStorage.removeItem('ict_netmon_user');
   }, []);
 
   return (

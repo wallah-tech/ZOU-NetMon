@@ -7,10 +7,10 @@ datasources:
     url: http://influxdb:8086
     jsonData:
       version: Flux
-      organization: zou-netmon
+      organization: ict-netmon
       defaultBucket: network-metrics
       tlsSkipVerify: true
     secureJsonData:
-      token: zou-super-secret-influx-token
+      token: ict-super-secret-influx-token
     isDefault: true
     editable: true

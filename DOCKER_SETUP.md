@@ -1,6 +1,6 @@
-# ZOU NetMon – Docker Development Environment
+# Ministry of ICT NetMon – Docker Development Environment
 
-This guide explains how to run the complete **ZOU NetMon** development stack inside Docker on any computer — Windows, macOS, or Linux.
+This guide explains how to run the complete **Ministry of ICT NetMon** development stack inside Docker on any computer — Windows, macOS, or Linux.
 
 ## Architecture
 
@@ -40,10 +40,10 @@ docker compose up --build
 #    http://localhost:5173
 
 # 5. Open Grafana dashboards
-#    http://localhost:3000   (admin / ZouGrafana@2026!)
+#    http://localhost:3000   (admin / IctGrafana@2026!)
 
 # 6. Open InfluxDB
-#    http://localhost:8086   (admin / ZouAdmin@2026!)
+#    http://localhost:8086   (admin / IctAdmin@2026!)
 ```
 
 ## Login Credentials (Web App)

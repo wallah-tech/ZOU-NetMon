@@ -1,4 +1,4 @@
-# ZOU NetMon – Application Stack
+# Ministry of ICT NetMon – Application Stack
 #
 # This compose file runs the three application-layer services:
 #   • web         – Vite/React dev server with hot-reload (port 5173)

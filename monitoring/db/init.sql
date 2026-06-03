@@ -1,4 +1,4 @@
--- Database Initialization for ZOU NetMon
+-- Database Initialization for Ministry of ICT NetMon
 -- Auto-generated from migrations
 
 -- 1. Create Roles

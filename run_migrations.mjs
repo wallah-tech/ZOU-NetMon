@@ -24,7 +24,7 @@ const files = readdirSync(migrationsDir)
   .filter(f => f.endsWith('.sql') && f >= '20260317090001')
   .sort();
 
-console.log('\n=== ZOU NetMon - Supabase Migrations ===\n');
+console.log('\n=== Ministry of ICT NetMon - Supabase Migrations ===\n');
 console.log('Migration files to apply:');
 files.forEach(f => console.log(' -', f));
 console.log('\nPlease go to https://supabase.com/dashboard/project/fwfcrbtvubxcomdltstw/sql/new');

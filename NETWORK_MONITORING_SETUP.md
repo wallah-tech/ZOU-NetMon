@@ -1,9 +1,9 @@
-# ZOU NetMon – Network Monitoring Integration Configuration Guide
+# Ministry of ICT NetMon – Network Integration Configuration Guide
 
-> **Target Environment**: Zimbabwe Open University (ZOU) campus network.
+> **Target Environment**: Ministry of ICT national network.
 > **Monitoring Server IP**: `10.0.0.100` (replace with your actual server IP)
-> **SNMPv3 User**: `zou_monitor`
-> **SNMP Community (v2c fallback)**: `zou-netmon-ro`
+> **SNMPv3 User**: `ict_monitor`
+> **SNMP Community (v2c fallback)**: `ict-netmon-ro`
 > **Syslog Port**: UDP 514 | **NetFlow Port**: UDP 2055 | **sFlow Port**: UDP 6343
 
 ---
@@ -12,7 +12,7 @@
 
 ```
   ┌─────────────────────────────────────────────────────────────────────┐
-  │                   ZOU Campus Network                                 │
+  │                   Ministry of ICT Network                            │
   │                                                                      │
   │  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐           │
   │  │  MikroTik   │     │  Cisco IOS  │     │ Huawei VRP  │           │
@@ -54,17 +54,17 @@ set enabled=yes servers=10.0.0.100
 #### Step 2 – SNMPv3
 ```routeros
 /snmp community
-add name=zou-netmon-v3 \
+add name=ict-netmon-v3 \
     authentication-protocol=SHA1 \
-    authentication-password=StrongAuth@ZOU! \
+    authentication-password=StrongAuth@ICT! \
     encryption-protocol=AES128 \
-    encryption-password=StrongEncr@ZOU! \
+    encryption-password=StrongEncr@ICT! \
     security=private \
     addresses=10.0.0.100/32
 
 /snmp
-set enabled=yes contact="network@zou.ac.zw" location="ZOU Campus" \
-    trap-community=zou-netmon-v3
+set enabled=yes contact="network@ict.gov.zw" location="Ministry HQ" \
+    trap-community=ict-netmon-v3
 ```
 
 #### Step 3 – IPFIX (Traffic Flow)
@@ -123,13 +123,13 @@ end
 #### Step 2 – SNMPv3
 ```cisco
 conf t
-snmp-server group ZOU_MONITOR_GRP v3 priv
-snmp-server user zou_monitor ZOU_MONITOR_GRP v3 \
-  auth sha StrongAuth@ZOU! \
-  priv aes 128 StrongEncr@ZOU!
-snmp-server location "ZOU Campus"
-snmp-server contact network@zou.ac.zw
-snmp-server host 10.0.0.100 version 3 priv zou_monitor
+snmp-server group ICT_MONITOR_GRP v3 priv
+snmp-server user ict_monitor ICT_MONITOR_GRP v3 \
+  auth sha StrongAuth@ICT! \
+  priv aes 128 StrongEncr@ICT!
+snmp-server location "Ministry HQ"
+snmp-server contact network@ict.gov.zw
+snmp-server host 10.0.0.100 version 3 priv ict_monitor
 end
 ```
 
@@ -164,7 +164,7 @@ conf t
 ip access-list standard SNMP_ACCESS
  10 permit 10.0.0.100
  20 deny any log
-snmp-server community zou-netmon-ro RO SNMP_ACCESS
+snmp-server community ict-netmon-ro RO SNMP_ACCESS
 end
 ```
 
@@ -197,13 +197,13 @@ quit
 system-view
 snmp-agent
 snmp-agent sys-info version v3
-snmp-agent usm-user v3 zou_monitor \
-  authentication-mode sha StrongAuth@ZOU! \
-  privacy-mode aes128 StrongEncr@ZOU!
-snmp-agent sys-info contact network@zou.ac.zw
-snmp-agent sys-info location "ZOU Campus"
-snmp-agent target-host trap-hostname zou-monitor address udp-domain 10.0.0.100 \
-  udp-port 162 params securityname zou_monitor v3 privacy
+snmp-agent usm-user v3 ict_monitor \
+  authentication-mode sha StrongAuth@ICT! \
+  privacy-mode aes128 StrongEncr@ICT!
+snmp-agent sys-info contact network@ict.gov.zw
+snmp-agent sys-info location "Ministry HQ"
+snmp-agent target-host trap-hostname ict-monitor address udp-domain 10.0.0.100 \
+  udp-port 162 params securityname ict_monitor v3 privacy
 quit
 ```
 
@@ -236,7 +236,7 @@ system-view
 acl number 2001
  rule 5 permit source 10.0.0.100 0
  rule 100 deny source any
-snmp-agent community read zou-netmon-ro acl 2001
+snmp-agent community read ict-netmon-ro acl 2001
 quit
 ```
 
@@ -306,18 +306,18 @@ Expected running containers:
 
 | Container | Purpose | Port |
 |-----------|---------|------|
-| `zou_influxdb` | Time-series database | 8086 |
-| `zou_telegraf` | SNMP poller | (outbound only) |
-| `zou_nfcapd` | NetFlow / IPFIX collector | UDP 2055, 6343 |
-| `zou_syslog` | Syslog receiver | UDP 514 |
-| `zou_grafana` | Dashboard & alerting | 3000 |
+| `ict_influxdb` | Time-series database | 8086 |
+| `ict_telegraf` | SNMP poller | (outbound only) |
+| `ict_nfcapd` | NetFlow / IPFIX collector | UDP 2055, 6343 |
+| `ict_syslog` | Syslog receiver | UDP 514 |
+| `ict_grafana` | Dashboard & alerting | 3000 |
 
 ### 3.5 Access the Services
 
 | Service | URL | Default Credentials |
 |---------|-----|-------------------|
-| Grafana | http://localhost:3000 | admin / ZouGrafana@2026! |
-| InfluxDB | http://localhost:8086 | admin / ZouAdmin@2026! |
+| Grafana | http://localhost:3000 | admin / IctGrafana@2026! |
+| InfluxDB | http://localhost:8086 | admin / IctAdmin@2026! |
 
 **Grafana post-start steps:**
 1. Login → Grafana auto-provisions InfluxDB as a data source (via `provisioning/datasources/influxdb.yml`)
@@ -339,7 +339,7 @@ docker compose logs -f
 
 # View logs from a specific container
 docker compose logs -f telegraf
-docker compose logs -f zou_syslog
+docker compose logs -f ict_syslog
 
 # Restart a single service
 docker compose restart telegraf
@@ -365,9 +365,9 @@ ping -c 4 192.168.1.3   # Huawei
 ### 4.2 SNMP Walk Test
 ```bash
 snmpwalk -v3 -l authPriv \
-  -u zou_monitor \
-  -a SHA -A "StrongAuth@ZOU!" \
-  -x AES -X "StrongEncr@ZOU!" \
+  -u ict_monitor \
+  -a SHA -A "StrongAuth@ICT!" \
+  -x AES -X "StrongEncr@ICT!" \
   192.168.1.1 sysDescr
 ```
 
