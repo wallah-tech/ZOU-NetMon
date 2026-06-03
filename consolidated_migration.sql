@@ -1,4 +1,4 @@
-﻿
+
 /*
   # Fix routers table RLS policies
   Allow anon access so the frontend (using anon key) can read/write routers.
@@ -293,12 +293,12 @@ INSERT INTO settings (id) VALUES (1) ON CONFLICT (id) DO NOTHING;
 -- â”€â”€â”€ Sample Routers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 INSERT INTO routers (name, ip_address, location, model, firmware_version, status, snmp_enabled, netflow_enabled, cpu_usage, memory_usage, uptime_seconds, connected_devices)
 VALUES
-  ('Router-Main-01', '10.0.0.1', 'Main Campus', 'Cisco ASR 1001-X', '17.3.3', 'online', true, true, 42.5, 58.2, 1728000, 234),
-  ('Router-Harare-01', '10.1.0.1', 'Harare Regional', 'Cisco ISR 4331', '16.9.6', 'online', true, false, 31.8, 45.1, 864000, 156),
-  ('Router-Bulawayo-01', '10.2.0.1', 'Bulawayo Regional', 'Cisco ISR 4321', '16.9.4', 'online', true, true, 28.4, 62.7, 1382400, 98),
-  ('Router-Lab-03', '10.3.0.3', 'Main Campus', 'Cisco Catalyst 8200', '17.5.1', 'warning', true, true, 81.3, 87.5, 432000, 67),
-  ('Router-Mutare-01', '10.4.0.1', 'Mutare Regional', 'Cisco ISR 4221', '16.9.3', 'online', false, false, 19.2, 38.4, 691200, 43),
-  ('Router-Masvingo-01', '10.5.0.1', 'Masvingo Regional', 'Cisco ISR 4221', '16.9.3', 'online', true, false, 22.7, 41.3, 518400, 38)
+  ('Router-Main-01', '10.0.0.1', 'Ministry HQ', 'Cisco ASR 1001-X', '17.3.3', 'online', true, true, 42.5, 58.2, 1728000, 234),
+  ('Router-Harare-01', '10.1.0.1', 'Harare Provincial Office', 'Cisco ISR 4331', '16.9.6', 'online', true, false, 31.8, 45.1, 864000, 156),
+  ('Router-Bulawayo-01', '10.2.0.1', 'Bulawayo Provincial Office', 'Cisco ISR 4321', '16.9.4', 'online', true, true, 28.4, 62.7, 1382400, 98),
+  ('Router-Lab-03', '10.3.0.3', 'Ministry HQ', 'Cisco Catalyst 8200', '17.5.1', 'warning', true, true, 81.3, 87.5, 432000, 67),
+  ('Router-Mutare-01', '10.4.0.1', 'Manicaland Provincial Office', 'Cisco ISR 4221', '16.9.3', 'online', false, false, 19.2, 38.4, 691200, 43),
+  ('Router-Masvingo-01', '10.5.0.1', 'Masvingo Provincial Office', 'Cisco ISR 4221', '16.9.3', 'online', true, false, 22.7, 41.3, 518400, 38)
 ON CONFLICT (ip_address) DO NOTHING;
 
 -- â”€â”€â”€ Sample Alerts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -315,18 +315,18 @@ VALUES
 -- â”€â”€â”€ Sample Traffic Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 INSERT INTO traffic_data (router_name, inbound_mbps, outbound_mbps, total_mbps, source_ip, destination, protocol, data_transferred_mb, duration_minutes, recorded_at)
 VALUES
-  ('Router-Main-01', 1820, 580, 2400, '10.1.45.23', 'elearning.zou.ac.zw', 'HTTPS', 456, 45, now() - interval '5 minutes'),
-  ('Router-Main-01', 1750, 550, 2300, '10.1.67.89', 'admin.zou.ac.zw', 'HTTPS', 328, 32, now() - interval '10 minutes'),
-  ('Router-Harare-01', 890, 210, 1100, '10.2.12.45', 'library.zou.ac.zw', 'HTTP', 234, 28, now() - interval '15 minutes'),
-  ('Router-Bulawayo-01', 650, 150, 800, '10.3.89.12', 'portal.zou.ac.zw', 'HTTPS', 198, 18, now() - interval '20 minutes'),
-  ('Router-Main-01', 1680, 490, 2170, '10.1.34.78', 'mail.zou.ac.zw', 'SMTP', 156, 52, now() - interval '25 minutes'),
-  ('Router-Main-01', 1920, 610, 2530, '10.1.45.23', 'elearning.zou.ac.zw', 'HTTPS', 512, 50, now() - interval '1 hour'),
-  ('Router-Harare-01', 940, 230, 1170, '10.2.12.45', 'library.zou.ac.zw', 'HTTP', 280, 35, now() - interval '2 hours'),
-  ('Router-Main-01', 1580, 430, 2010, '10.1.45.23', 'elearning.zou.ac.zw', 'HTTPS', 390, 42, now() - interval '3 hours'),
-  ('Router-Bulawayo-01', 720, 180, 900, '10.3.89.12', 'portal.zou.ac.zw', 'HTTPS', 210, 22, now() - interval '6 hours'),
-  ('Router-Main-01', 2100, 700, 2800, '10.1.45.23', 'elearning.zou.ac.zw', 'HTTPS', 620, 60, now() - interval '12 hours'),
-  ('Router-Mutare-01', 320, 80, 400, '10.4.12.10', 'portal.zou.ac.zw', 'HTTPS', 120, 15, now() - interval '4 hours'),
-  ('Router-Masvingo-01', 280, 70, 350, '10.5.12.10', 'library.zou.ac.zw', 'HTTP', 90, 12, now() - interval '5 hours');
+  ('Router-Main-01', 1820, 580, 2400, '10.1.45.23', 'elearning.ict.gov.zw', 'HTTPS', 456, 45, now() - interval '5 minutes'),
+  ('Router-Main-01', 1750, 550, 2300, '10.1.67.89', 'admin.ict.gov.zw', 'HTTPS', 328, 32, now() - interval '10 minutes'),
+  ('Router-Harare-01', 890, 210, 1100, '10.2.12.45', 'library.ict.gov.zw', 'HTTP', 234, 28, now() - interval '15 minutes'),
+  ('Router-Bulawayo-01', 650, 150, 800, '10.3.89.12', 'portal.ict.gov.zw', 'HTTPS', 198, 18, now() - interval '20 minutes'),
+  ('Router-Main-01', 1680, 490, 2170, '10.1.34.78', 'mail.ict.gov.zw', 'SMTP', 156, 52, now() - interval '25 minutes'),
+  ('Router-Main-01', 1920, 610, 2530, '10.1.45.23', 'elearning.ict.gov.zw', 'HTTPS', 512, 50, now() - interval '1 hour'),
+  ('Router-Harare-01', 940, 230, 1170, '10.2.12.45', 'library.ict.gov.zw', 'HTTP', 280, 35, now() - interval '2 hours'),
+  ('Router-Main-01', 1580, 430, 2010, '10.1.45.23', 'elearning.ict.gov.zw', 'HTTPS', 390, 42, now() - interval '3 hours'),
+  ('Router-Bulawayo-01', 720, 180, 900, '10.3.89.12', 'portal.ict.gov.zw', 'HTTPS', 210, 22, now() - interval '6 hours'),
+  ('Router-Main-01', 2100, 700, 2800, '10.1.45.23', 'elearning.ict.gov.zw', 'HTTPS', 620, 60, now() - interval '12 hours'),
+  ('Router-Mutare-01', 320, 80, 400, '10.4.12.10', 'portal.ict.gov.zw', 'HTTPS', 120, 15, now() - interval '4 hours'),
+  ('Router-Masvingo-01', 280, 70, 350, '10.5.12.10', 'library.ict.gov.zw', 'HTTP', 90, 12, now() - interval '5 hours');
 
 -- â”€â”€â”€ Sample Anomalies â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 INSERT INTO anomalies (router_name, type, severity, description, confidence, resolved, detected_at)

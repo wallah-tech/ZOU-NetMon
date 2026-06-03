@@ -70,7 +70,12 @@ export default function Dashboard() {
   };
 
   const campusBarData = stats?.campusStatus.map(c => ({
-    campus: c.campus.replace(' Regional', '').replace(' Campus', ''),
+    campus: c.campus
+      .replace(' Regional', '')
+      .replace(' Campus', '')
+      .replace(' Provincial Office', '')
+      .replace(' Government ', '')
+      .replace(' Office', ''),
     latency: c.avgLatency,
   })) || [];
 
@@ -138,7 +143,7 @@ export default function Dashboard() {
           height={256}
         />
         <NetBarChart
-          title="Latency by Campus (ms)"
+          title="Latency by Location (ms)"
           data={campusBarData}
           xKey="campus"
           series={[{ key: 'latency', name: 'Latency (ms)', color: '#7c3aed' }]}
@@ -212,9 +217,9 @@ export default function Dashboard() {
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Campus Connectivity Status</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Location Connectivity Status</h3>
           {(stats?.campusStatus ?? []).length === 0 ? (
-            <p className="text-sm text-gray-500">No campus data available</p>
+            <p className="text-sm text-gray-500">No location data available</p>
           ) : (
             <div className="space-y-3">
               {stats!.campusStatus.map((campus, idx) => (

@@ -10,6 +10,20 @@ export interface DashboardStats {
 }
 
 const campusLatencyMap: Record<string, number> = {
+  // Ministry Locations
+  'Ministry HQ': 12,
+  'Government Data Center': 15,
+  'Harare Provincial Office': 18,
+  'Bulawayo Provincial Office': 24,
+  'Manicaland Provincial Office': 31,
+  'Midlands Provincial Office': 28,
+  'Masvingo Provincial Office': 35,
+  'Mashonaland East Provincial Office': 30,
+  'Mashonaland West Provincial Office': 32,
+  'Mashonaland Central Provincial Office': 29,
+  'Matabeleland North Provincial Office': 38,
+  'Matabeleland South Provincial Office': 36,
+  // Legacy ZOU Locations (backward compatibility)
   'Main Campus': 12,
   'Harare Regional': 18,
   'Bulawayo Regional': 24,
@@ -84,7 +98,7 @@ export const dashboardService = {
       .slice(0, 5);
     const max = sorted[0]?.[1] || 1;
     return sorted.map(([name, total]) => ({
-      name: name.replace(/\.zou\.ac\.zw$/, '').replace(/^(\w)/, c => c.toUpperCase()),
+      name: name.replace(/\.ict\.gov\.zw$/, '').replace(/\.zou\.ac\.zw$/, '').replace(/^(\w)/, c => c.toUpperCase()),
       usage_mbps: Math.round(total),
       percent: Math.round((total / max) * 100),
     }));

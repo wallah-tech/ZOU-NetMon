@@ -59,7 +59,7 @@ export default function Login() {
               <img src="./logo.avif" alt="Ministry of ICT" style={styles.logoImg} />
             </div>
             <h1 style={styles.brandTitle}>Ministry of ICT</h1>
-            <h2 style={styles.brandSubtitle}>ZOU NetMon</h2>
+            <h2 style={styles.brandSubtitle}>NetMon Platform</h2>
             <p style={styles.brandDesc}>
               Network Intelligence Platform — Real-time monitoring, threat detection and
               analytics for Zimbabwe's national ICT infrastructure.
@@ -195,7 +195,7 @@ export default function Login() {
             </form>
 
             <p style={styles.footerNote}>
-              🔒 Secured by Ministry of ICT · Zimbabwe Open University Network
+              🔒 Secured by Ministry of ICT · National Network Monitoring
             </p>
           </div>
         </div>

@@ -96,7 +96,7 @@ export default function RouterModal({
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="e.g., Main Campus Router"
+              placeholder="e.g., Ministry HQ Router"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -126,11 +126,18 @@ export default function RouterModal({
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select location</option>
-              <option value="Main Campus">Main Campus</option>
-              <option value="Regional Center North">Regional Center North</option>
-              <option value="Regional Center South">Regional Center South</option>
-              <option value="Regional Center East">Regional Center East</option>
-              <option value="Regional Center West">Regional Center West</option>
+              <option value="Ministry HQ">Ministry HQ</option>
+              <option value="Government Data Center">Government Data Center</option>
+              <option value="Harare Provincial Office">Harare Provincial Office</option>
+              <option value="Bulawayo Provincial Office">Bulawayo Provincial Office</option>
+              <option value="Manicaland Provincial Office">Manicaland Provincial Office</option>
+              <option value="Midlands Provincial Office">Midlands Provincial Office</option>
+              <option value="Masvingo Provincial Office">Masvingo Provincial Office</option>
+              <option value="Mashonaland East Provincial Office">Mashonaland East Provincial Office</option>
+              <option value="Mashonaland West Provincial Office">Mashonaland West Provincial Office</option>
+              <option value="Mashonaland Central Provincial Office">Mashonaland Central Provincial Office</option>
+              <option value="Matabeleland North Provincial Office">Matabeleland North Provincial Office</option>
+              <option value="Matabeleland South Provincial Office">Matabeleland South Provincial Office</option>
             </select>
           </div>
 
